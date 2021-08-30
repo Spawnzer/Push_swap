@@ -6,7 +6,7 @@
 /*   By: adubeau <marvin@42quebec.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 14:44:07 by adubeau           #+#    #+#             */
-/*   Updated: 2021/08/24 19:18:34 by adubeau          ###   ########.fr       */
+/*   Updated: 2021/08/27 20:34:53 by adubeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,8 +178,9 @@ int	ft_push(int *strA, int *strB, int argc, char c)
 	t = strA[i];
 	strA[i] = strB[j];
 	strB[j] = t;
-	write(1, "\np", 2);
+	write(1, "p", 2);
 	ft_putchar(c);
+	write(1, "\n", 1);
 	return (1);
 }
 
@@ -201,7 +202,7 @@ int	ft_rotate(int *str, int argc)
 		i++;
 	}
 	str[i] = j;
-	write(1, "\nra", 3);
+	write(1, "ra\n", 3);
 	return (1);
 }
 
@@ -222,7 +223,7 @@ int	ft_revRotate(int *str, int argc)
 	}
 	i++;
 	str[i] = j;
-	write(1, "\nrra", 4);
+	write(1, "rra\n", 4);
 	return (1);
 }
 
@@ -334,15 +335,9 @@ int	ft_sort3(int *strA)
 		ret++;
 	}
 	if (strA[0] > strA[2])
-	{
 		ret += ft_revRotate(strA, 2);
-		write(1, "rra\n", 4);
-	}
 	else if (strA[0] < strA[1] && strA[1] > strA[2])
-	{
 		ret += ft_revRotate(strA, 2);
-		write(1, "rra\n", 4);
-	}
 	if (ft_swap(strA, ret))
 	{
 		write(1, "sa\n", 3);
@@ -431,7 +426,9 @@ int	main(int argc, char **argv)
 		i += ft_bubble(strA, strB, len);
 	else
 		i = ft_radix(strA, strB, len);
+	/*write(1, "\n", 1);
 	ft_printArrays(strA, strB, len);
 	write(1, "\nFinal: ", 7);
-	ft_putnbr(i);
+	ft_putnbr(i);*/
+	return (1);
 }
