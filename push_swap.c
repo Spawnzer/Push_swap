@@ -6,7 +6,7 @@
 /*   By: adubeau <marvin@42quebec.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/29 14:44:07 by adubeau           #+#    #+#             */
-/*   Updated: 2021/08/27 20:34:53 by adubeau          ###   ########.fr       */
+/*   Updated: 2021/12/08 18:53:49 by adubeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,12 +158,13 @@ int	ft_swap(int *str, int argc)
 		t = str[i];
 		str[i] = str[i + 1];
 		str[i + 1] = t;
+		write(1, "sa\n", 3);
 		return (1);
 	}
 	return (0);
 }
 
-int	ft_push(int *strA, int *strB, int argc, char c)
+int	ft_push(int *strA, int *strB, int argc, char *c)
 {
 	int	i;
 	int	j;
@@ -178,9 +179,7 @@ int	ft_push(int *strA, int *strB, int argc, char c)
 	t = strA[i];
 	strA[i] = strB[j];
 	strB[j] = t;
-	write(1, "p", 2);
-	ft_putchar(c);
-	write(1, "\n", 1);
+	ft_putstr(c);
 	return (1);
 }
 
@@ -324,25 +323,36 @@ int	ft_maxB(int len)
 	return (maxB);
 }
 
+int ft_is_sorted(int *strA, int argc)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < argc - 1)
+	{
+		j = 0;
+		while (j + i < argc - 1)
+		{
+			if (strA[i] > strA[i + j])
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	ft_sort3(int *strA)
 {
 	int	ret;
 
 	ret = 0;
-	if (ft_swap(strA, ret))
-	{
-		write(1, "sa\n", 3);
-		ret++;
-	}
-	if (strA[0] > strA[2])
-		ret += ft_revRotate(strA, 2);
-	else if (strA[0] < strA[1] && strA[1] > strA[2])
-		ret += ft_revRotate(strA, 2);
-	if (ft_swap(strA, ret))
-	{
-		write(1, "sa\n", 3);
-		ret++;
-	}
+	if (strA[0] > strA[1] && strA[0] > strA[2])
+		ret += ft_rotate(strA, 3);
+	else if (strA[1] > strA[0] && strA[1] > strA[2])
+		ret += ft_revRotate(strA, 3);
+	ret += ft_swap(strA, 2);
 	return (ret);
 }
 
@@ -359,19 +369,39 @@ int	ft_bubble(int *strA, int *strB, int len)
 		j = ft_smallest(strA, c, len);
 		if (j < ((len - c) / 2))
 			while (j-- > 0)
-				h += ft_rotate(strA, len - 1);
+				h += ft_rotate(strA, len);
 		else
 			while (j++ + c < len)
-				h += ft_revRotate(strA, len - 1);
-		h += ft_push(strA, strB, len, 'a');
+				h += ft_revRotate(strA, len);
+		h += ft_push(strA, strB, len, "pa\n");
 		c++;
 	}
 	if (ft_swap(strA, len))
 		h++;
 	while (strB[len - 1] != 0)
-		h += ft_push(strB, strA, len, 'b');
+		h += ft_push(strB, strA, len, "pb\n");
 	return (h);
 }
+
+/*int	ft_monkey(int *strA, int *strB, int argc)
+{
+	int i;
+	int (*f[3])(int *, int);
+	int h;
+
+	i = 0;
+	h = 0;
+	f[0] = &ft_swap;
+	f[1] = &ft_revRotate;
+	f[2] = &ft_rotate;
+	while (!ft_is_sorted(strA, argc))
+	{
+		i = rand() % 3;
+		f[i](strA, argc);
+		h++;
+	}
+	return (h);
+}*/
 
 int	ft_radix(int *strA, int *strB, int len)
 {
@@ -390,45 +420,203 @@ int	ft_radix(int *strA, int *strB, int len)
 		while (j++ < len)
 		{
 			k = ft_findN(strA);
-			if (((k >> i) & 1) == 1)
-				 u += ft_rotate(strA, len - 1);
+			if (((k >> i) & 1) == 0)
+				u += ft_push(strA, strB, len, "pb\n"); 
 			else
-				u += ft_push(strA, strB, len, 'a');
+				u += ft_rotate(strA, len - 1);
 		}
 		j = 0;
 		while (strB[len - 1] != 0)
-			u += ft_push(strB, strA, len, 'b');
+			u += ft_push(strB, strA, len, "pa\n");
 	}
 	return (u);
+}
+
+size_t	ft_strlcpy(char *dest, const char *src, size_t n)
+{
+	unsigned int	i;
+
+	i = 0;
+	if (!dest || !src)
+		return (0);
+	if (n > 0)
+	{
+		while (--n && src[i])
+		{
+			dest[i] = src[i];
+			i++;
+		}
+		dest[i] = '\0';
+	}
+	while (src[i])
+		i++;
+	return (i);
+}
+
+static char	**ft_malloc_error(char **tab)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (tab[i])
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+	return (NULL);
+}
+
+static unsigned int	ft_get_nb_strs(char const *s, char c)
+{
+	unsigned int	i;
+	unsigned int	nb_strs;
+
+	if (!s[0])
+		return (0);
+	i = 0;
+	nb_strs = 0;
+	while (s[i] && s[i] == c)
+		i++;
+	while (s[i])
+	{
+		if (s[i] == c)
+		{
+			nb_strs++;
+			while (s[i] && s[i] == c)
+				i++;
+			continue ;
+		}
+		i++;
+	}
+	if (s[i - 1] != c)
+		nb_strs++;
+	return (nb_strs);
+}
+
+static void	ft_get_next_str(char **next_str, unsigned int *next_str_len,
+					char c)
+{
+	unsigned int	i;
+
+	*next_str += *next_str_len;
+	*next_str_len = 0;
+	i = 0;
+	while (**next_str && **next_str == c)
+		(*next_str)++;
+	while ((*next_str)[i])
+	{
+		if ((*next_str)[i] == c)
+			return ;
+		(*next_str_len)++;
+		i++;
+	}
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char			**tab;
+	char			*next_str;
+	unsigned int	next_str_len;
+	unsigned int	nb_strs;
+	unsigned int	i;
+
+	nb_strs = ft_get_nb_strs(s, c);
+	tab = (char **)malloc(sizeof(char *) * (nb_strs + 1));
+	if (!tab || !s)
+		return (NULL);
+	i = 0;
+	next_str = (char *)s;
+	next_str_len = 0;
+	while (i < nb_strs)
+	{
+		ft_get_next_str(&next_str, &next_str_len, c);
+		tab[i] = (char *)malloc(sizeof(char) * (next_str_len + 1));
+		if (!tab[i])
+			return (ft_malloc_error(tab));
+		ft_strlcpy(tab[i], next_str, next_str_len + 1);
+		i++;
+	}
+	tab[i] = NULL;
+	return (tab);
+}
+
+int	ft_double(int *str)
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		j = 1;
+		while (str[j]) 
+		{
+			if (i == j)
+				j++;
+			if (str[j] == str[i])
+					return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	ft_sort5(int *str, int len)
+{
+	int	ret;
+	ret = 0;
+
+	while(!(ft_is_sorted(str, len)))
+	{
+		ret += ft_sort3(str);
+		if (str[4]>str[3] && str[3]>str[2] && str[2] > str[1] && str[1] > str[0])
+				break;
+	}	
+	return (ret);
 }
 
 int	main(int argc, char **argv)
 {
 	int	i;
 	int	len;
-	int	strA[argc - 1];
-	int	strB[argc - 1];
-	int	strT[argc - 1];
+	int	strA[1000];
+	int	strB[1000];
+	int	strT[1000];
+	char **temp;
 
 	i = -1;
-	len = argc - 1;
-	while (++i < len)
+	if (argc != 2)
 	{
-		strA[i] = ft_atoi(argv[i + 1]);
+		ft_putstr("Erreur, mauvais nombre d'argument\n");
+		return (0);
+	}
+	temp = ft_split(argv[1], ' ');
+	while (temp[++i])
+	{	
+		strA[i] = ft_atoi(temp[i]);
 		strB[i] = 0;
 		strT[i] = strA[i];
 	}
+	if ((ft_double(strT)))
+	{
+		ft_putstr("Erreur, présence de doublons\n");
+		return (0);
+	}
+	len = i;
 	ft_index(strA, strT, len);
 	i = 0;
 	if (len == 3)
 		i += ft_sort3(strA);
 	else if (len == 5)
-		i += ft_bubble(strA, strB, len);
+		i += ft_sort5(strA, len);
 	else
 		i = ft_radix(strA, strB, len);
-	/*write(1, "\n", 1);
+	write(1, "\n", 1);
 	ft_printArrays(strA, strB, len);
 	write(1, "\nFinal: ", 7);
-	ft_putnbr(i);*/
+	ft_putnbr(i);
 	return (1);
 }
