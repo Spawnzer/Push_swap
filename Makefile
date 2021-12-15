@@ -6,7 +6,7 @@
 #    By: adubeau <marvin@42quebec.com>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/15 15:33:27 by adubeau           #+#    #+#              #
-#    Updated: 2021/12/15 16:07:31 by adubeau          ###   ########.fr        #
+#    Updated: 2021/12/15 17:14:55 by adubeau          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,25 +20,31 @@ SRCS		= 	srcs/ft_algos.c \
 				srcs/push_swap.c \
 				srcs/ft_moves.c \
 
-CC      =   gcc
-FLAGS   =   -Wall -Wextra -Werror -c
-RM      =   rm -f
-INCS 	= 	./includes
-OBJS    =   $(SRCS:.c=.o)
-FLAGS   =   -Wall -Wextra -Werror -c
+
+OBJS		= $(SRCS:.c=.o)
+RM			= rm -rf
+EXEC		= gcc -o
+FLAGS		= -Wall -Werror -Wextra -c -g
+INCS		= ./includes
+CC			= gcc
+CP			= cp
+
+.c.o:
+	$(CC) $(FLAGS) $< -o $(<:.c=.o) -I$(INCS)
 
 all: $(NAME)
 
-$(NAME):
-		$(CC) $(FLAGS) $(SRCS)
-	   	$(NAME) $(OBJS)
+$(NAME): $(OBJS)
+	@$(EXEC) $(NAME) $(OBJS) $(LIB)
 
 clean:
-		$(RM) $(OBJS)
+	@clear all
+	@$(RM) $(OBJS)
 
 fclean: clean
-		$(RM) $(NAME)
-	
+	@$(RM) $(NAME)
+	@$(RM)
+
 re: fclean all clean
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re .c.o
