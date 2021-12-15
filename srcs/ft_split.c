@@ -6,7 +6,7 @@
 /*   By: adubeau <marvin@42quebec.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 19:34:44 by adubeau           #+#    #+#             */
-/*   Updated: 2021/12/09 21:16:06 by adubeau          ###   ########.fr       */
+/*   Updated: 2021/12/15 16:03:51 by adubeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t n)
 	return (i);
 }
 
-static char	**ft_malloc_error(char **tab)
+char	**ft_malloc_error(char **tab)
 {
 	unsigned int	i;
 
@@ -47,7 +47,7 @@ static char	**ft_malloc_error(char **tab)
 	return (NULL);
 }
 
-static unsigned int	ft_get_nb_strs(char const *s, char c)
+unsigned int	ft_get_nb_strs(char const *s, char c)
 {
 	unsigned int	i;
 	unsigned int	nb_strs;
@@ -74,7 +74,7 @@ static unsigned int	ft_get_nb_strs(char const *s, char c)
 	return (nb_strs);
 }
 
-static void	ft_get_next_str(char **next_str, unsigned int *next_str_len,
+void	ft_get_next_str(char **next_str, unsigned int *next_str_len,
 					char c)
 {
 	unsigned int	i;

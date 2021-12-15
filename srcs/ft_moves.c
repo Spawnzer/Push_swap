@@ -6,7 +6,7 @@
 /*   By: adubeau <marvin@42quebec.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 19:26:43 by adubeau           #+#    #+#             */
-/*   Updated: 2021/12/09 20:45:31 by adubeau          ###   ########.fr       */
+/*   Updated: 2021/12/15 15:45:25 by adubeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	ft_swap(int *str, int argc)
 	int	i;
 	int	t;
 
+	i = argc;
 	i = 0;
 	while (!str[i])
 		i++;

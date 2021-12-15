@@ -6,7 +6,7 @@
 /*   By: adubeau <marvin@42quebec.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 19:23:33 by adubeau           #+#    #+#             */
-/*   Updated: 2021/12/09 20:45:42 by adubeau          ###   ########.fr       */
+/*   Updated: 2021/12/15 17:16:51 by adubeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void	ft_print_arrays(int *str_a, int *str_b, int len)
 {
 	int	i;
 	int	j;
-	int	space;
 
 	i = 0;
 	j = 0;

@@ -6,7 +6,7 @@
 /*   By: adubeau <marvin@42quebec.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/17 17:45:50 by adubeau           #+#    #+#             */
-/*   Updated: 2021/12/09 21:20:15 by adubeau          ###   ########.fr       */
+/*   Updated: 2021/12/15 16:04:28 by adubeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void				ft_putstr(char *str);
 int					ft_putnbr(int nbr);
 void				ft_print_arrays(int *str_a, int *str_b, int len);
 size_t				ft_strlcpy(char *dest, const char *src, size_t n);
-static char			**ft_malloc_error(char **tab);
-static unsigned int	ft_get_nb_strs(char const *s, char c);
-static void			ft_get_next_str(char **next_str,
+char				**ft_malloc_error(char **tab);
+unsigned int		ft_get_nb_strs(char const *s, char c);
+void				ft_get_next_str(char **next_str,
 						unsigned int *next_str_len, char c);
 char				**ft_split(char const *s, char c);
 int					ft_is_sorted(int *str, int argc);

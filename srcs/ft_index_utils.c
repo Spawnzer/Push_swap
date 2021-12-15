@@ -6,7 +6,7 @@
 /*   By: adubeau <marvin@42quebec.com>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 19:29:15 by adubeau           #+#    #+#             */
-/*   Updated: 2021/12/09 20:45:21 by adubeau          ###   ########.fr       */
+/*   Updated: 2021/12/15 15:45:51 by adubeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	ft_sort(int *str_a, int len)
 {
 	int	i;
 	int	j;
-	int	t;
 
 	i = 0;
 	while (i < len - 1)
@@ -36,7 +35,6 @@ int	ft_smallest(int *str, int c, int len)
 {
 	int	i;
 	int	j;
-	int	k;
 
 	i = c;
 	j = c;
